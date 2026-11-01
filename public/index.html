@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تلاوات الشيخ محمد عبده — موقع محبين غير رسمي</title>
+  <meta name="description" content="موقع محبين غير رسمي يجمع تلاوات وأدعية الشيخ محمد عبده من مصادرها العامة. الموقع ليس تابعًا للشيخ ولا يديره.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#06140f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="تلاوات عبده">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/">
+      <span class="mark">م</span>
+      <span><b>تلاوات الشيخ محمد عبده</b><small>موقع محبين — غير رسمي</small></span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="on">المكتبة</a>
+      <a href="/reels">🎬 صانع الريلز</a>
+    </nav>
+  </header>
+
+  <div class="wrap">
+    <div class="disclaimer" role="note">
+      <span>⚠️</span>
+      <div><b>تنبيه:</b> هذا موقع محبين <b>غير رسمي</b>، وليس تابعًا لفضيلة الشيخ محمد عبده ولا يديره هو أو أي جهة تمثله.
+        التسجيلات معروضة من قنواته العامة وحقوقها محفوظة لأصحابها. لو عندك ملاحظة أو طلب حذف تواصل معنا.</div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <img class="hero-photo" src="/sheikh/01-smile.jpg" alt="الشيخ محمد عبده" width="132" height="132">
+      <h1>تلاوات وأدعية الشيخ محمد عبده</h1>
+      <p>كل التلاوات والأدعية في مكان واحد، مقسّمة بالسنة والسورة — واعمل منها ريلز بالآيات والتفسير</p>
+      <div class="cta">
+        <a class="btn gold" href="/reels">🎬 اعمل ريلز من تلاوة</a>
+      </div>
+      <div class="channels">
+        <span class="hint">تابع الشيخ على قنواته:</span>
+        <a href="https://www.youtube.com/@mohamedabdo1354" target="_blank" rel="noopener">▶️ يوتيوب</a>
+        <a href="https://www.facebook.com/Mohamed.abdo.QURAN/" target="_blank" rel="noopener">📘 فيسبوك</a>
+        <a href="https://t.me/m0hamedAbdu" target="_blank" rel="noopener">✈️ تليجرام المحبين</a>
+      </div>
+    </section>
+
+    <div class="admin-bar" id="adminBar" hidden>
+      <button class="btn small" id="addBtn">➕ إضافة تسجيل</button>
+      <button class="btn small" id="importBtn">🔄 تحديث من يوتيوب</button>
+      <button class="btn small" id="selectBtn">☑️ تحديد أكتر من واحد</button>
+      <span class="hint" id="importStatus"></span>
+    </div>
+
+    <div class="tabs main-tabs" id="tabs">
+      <button data-t="all" class="on">الكل <span class="n"></span></button>
+      <button data-t="tilawa">📖 التلاوات <span class="n"></span></button>
+      <button data-t="doaa">🤲 الأدعية <span class="n"></span></button>
+      <button data-t="ibtihal">🎙 ابتهالات وتكبيرات <span class="n"></span></button>
+    </div>
+
+    <div class="years" id="years"></div>
+
+    <div class="toolbar">
+      <input class="search big-input" id="q" type="search" placeholder="🔍 ابحث: سورة يوسف، دعاء ليلة 27، تراويح...">
+    </div>
+    <details class="more-filters">
+      <summary class="hint">فلاتر أكتر (السورة، السلسلة، الترتيب)</summary>
+    <div class="toolbar">
+      <select id="surahFilter" class="auto"><option value="">كل السور</option></select>
+      <select id="listFilter" class="auto"><option value="">كل السلاسل</option></select>
+      <select id="formatFilter" class="auto">
+        <option value="">فيديوهات وشورتس</option>
+        <option value="video">فيديوهات بس</option>
+        <option value="short">شورتس بس</option>
+      </select>
+      <select id="sort" class="auto">
+        <option value="new">الأحدث</option>
+        <option value="old">الأقدم</option>
+        <option value="surah">ترتيب المصحف</option>
+      </select>
+    </div>
+    </details>
+    <p class="hint" id="resultCount"></p>
+
+    <div class="grid" id="grid"></div>
+    <div class="more"><button class="btn" id="moreBtn" hidden>عرض المزيد</button></div>
+  </main>
+
+  <div class="bulk" id="bulk" hidden>
+    <b id="bulkCount">٠ محدد</b>
+    <select id="bulkType" class="auto">
+      <option value="">غيّر النوع...</option>
+      <option value="tilawa">تلاوة</option>
+      <option value="doaa">دعاء</option>
+      <option value="ibtihal">ابتهال / تكبيرات</option>
+    </select>
+    <input id="bulkYear" type="number" placeholder="السنة" min="1990" max="2100" style="width:90px">
+    <button class="btn small" id="bulkYearBtn">حط السنة</button>
+    <button class="btn small danger" data-set='{"hidden":true}'>إخفاء</button>
+    <button class="btn small" id="bulkAll">تحديد الظاهر</button>
+    <button class="btn small" id="bulkClose">✕</button>
+  </div>
+
+  <footer>
+    موقع محبين غير رسمي — غير تابع للشيخ محمد عبده. جميع حقوق التسجيلات لأصحابها.
+    <br>نص القرآن والتفسير من <a href="https://alquran.cloud" target="_blank" rel="noopener">alquran.cloud</a>.
+  </footer>
+
+  <dialog id="dlg">
+    <form class="form" id="form" method="dialog">
+      <h2 id="dlgTitle">إضافة تسجيل</h2>
+      <label>النوع
+        <select name="type">
+          <option value="tilawa">تلاوة</option>
+          <option value="doaa">دعاء</option>
+          <option value="ibtihal">ابتهال / تكبيرات</option>
+        </select>
+      </label>
+      <label>اللينك (يوتيوب، فيسبوك، أو ملف صوت مباشر)
+        <input name="url" type="url" required placeholder="https://www.youtube.com/watch?v=..." dir="ltr">
+      </label>
+      <label>العنوان
+        <input name="title" required placeholder="مثال: سورة يوسف — تلاوة خاشعة">
+      </label>
+      <div class="row">
+        <label>السورة (لو تلاوة)
+          <select name="surah"><option value="">—</option></select>
+        </label>
+        <label>سنة التسجيل
+          <input name="year" type="number" min="1990" max="2100" placeholder="2024">
+        </label>
+      </div>
+      <label>المكان / المناسبة
+        <input name="place" placeholder="مثال: عزاء — دمياط">
+      </label>
+      <label>ملاحظة
+        <textarea name="note" rows="2"></textarea>
+      </label>
+      <label id="passRow" hidden>باسورد الإدارة
+        <input name="pass" type="password" autocomplete="current-password">
+      </label>
+      <p class="err" id="formErr"></p>
+      <div class="row">
+        <button class="btn gold" value="save" id="saveBtn">حفظ</button>
+        <button class="btn" value="cancel" formnovalidate>إلغاء</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="passDlg">
+    <form class="form" method="dialog">
+      <h2>دخول الإدارة</h2>
+      <label>الباسورد <input id="passInput" type="password" autocomplete="current-password"></label>
+      <div class="row"><button class="btn gold" value="ok">دخول</button><button class="btn" value="cancel">إلغاء</button></div>
+    </form>
+  </dialog>
+
+  <script src="common.js"></script>
+  <script src="library.js"></script>
+  <script src="install.js"></script>
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});</script>
+</body>
+</html>

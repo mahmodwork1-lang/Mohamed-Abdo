@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>صانع الريلز — تلاوات الشيخ محمد عبده (غير رسمي)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Reem+Kufi:wght@400;700&family=Cairo:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#06140f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="تلاوات عبده">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="studio-page">
+  <header class="top">
+    <a class="brand" href="/">
+      <span class="mark">م</span>
+      <span><b>تلاوات الشيخ محمد عبده</b><small>موقع محبين — غير رسمي</small></span>
+    </a>
+    <nav class="nav">
+      <a href="/">المكتبة</a>
+      <a href="/reels" class="on">🎬 صانع الريلز</a>
+    </nav>
+  </header>
+
+  <p class="note wrap">⚠️ موقع محبين <b>غير رسمي</b> وليس تابعًا للشيخ محمد عبده.</p>
+
+  <main class="wrap studio">
+    <div class="steps">
+      <!-- ١ -->
+      <section class="panel step">
+        <h2><span class="num">١</span> اختار الآيات</h2>
+        <div class="seg big" id="mode">
+          <button data-m="ayat" class="on">📖 آيات</button>
+          <button data-m="free">🤲 دعاء</button>
+          <button data-m="own">🎙 صوت من عندك</button>
+        </div>
+
+        <div id="ownBox" class="stack" hidden>
+          <label class="btn gold fx-upload">📁 ارفع ملف صوت أو فيديو<input id="ownFile" type="file" accept="audio/*,video/*,.m4a,.mp3,.wav,.ogg,.aac,.flac,.mp4,.mov" hidden></label>
+          <p class="hint" id="ownMsg">هيتاخد الصوت من الملف. الكلام هيتكتب من القرآن أو من اللي إنت هتكتبه.</p>
+          <div id="ownList" class="own-list"></div>
+          <div class="seg" id="ownKind">
+            <button data-k="ayat" class="on">📖 الصوت ده قرآن</button>
+            <button data-k="free">✍️ كلام تاني</button>
+          </div>
+        </div>
+
+        <div id="ayatBox" class="stack">
+          <select id="surah" class="big-input"></select>
+          <div class="row">
+            <label>من آية <input id="fromAyah" class="big-input" type="number" min="1" value="1" inputmode="numeric"></label>
+            <label>إلى آية <input id="toAyah" class="big-input" type="number" min="1" value="3" inputmode="numeric"></label>
+          </div>
+          <div class="seg" id="tafsirSeg">
+            <button data-v="ar.muyassar" class="on">التفسير الميسر</button>
+            <button data-v="ar.jalalayn">الجلالين</button>
+            <button data-v="">بدون تفسير</button>
+          </div>
+          <label class="check"><input id="shortTafsir" type="checkbox" checked> التفسير على قد الكلام اللي ظاهر في كل شاشة (مش الآية كلها)</label>
+        </div>
+
+        <div id="freeBox" class="stack" hidden>
+          <input id="doaaSearch" type="search" placeholder="🔍 دوّر على الدعاء: ليلة 27، عرفة، رمضان...">
+          <div id="doaaList" class="matches"></div>
+          <div id="pieces" class="pieces" hidden></div>
+          <label id="freeTextRow" hidden>كلام الدعاء (كل سطر في شاشة — عدّل لو فيه غلط)
+            <textarea id="freeText" rows="5"></textarea>
+          </label>
+          <p class="hint" id="doaaCheck" hidden></p>
+        </div>
+
+        <button class="btn gold huge" id="makeBtn">✨ اعمل الفيديو</button>
+        <div class="progress" id="progress" hidden>
+          <div class="bar"><i id="pbar"></i></div>
+          <p id="pmsg"></p>
+        </div>
+        <p class="rec-info" id="recInfo" hidden></p>
+        <div id="matches" class="matches" hidden></div>
+      </section>
+
+    </div>
+
+    <!-- ٣ -->
+    <aside class="preview panel step">
+      <h2><span class="num">٢</span> شوف وعدّل وحمّل</h2>
+      <canvas id="canvas" width="1080" height="1920"></canvas>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="status" id="status">اختار الآيات ودوس "اعمل الفيديو"</div>
+      <button class="btn gold huge" id="renderBtn" disabled>⬇️ اعمل ملف الفيديو</button>
+      <p class="hint">بيتعمل بكارت الشاشة، وغالبًا أسرع من مدة الفيديو. سيب التاب مفتوح لحد ما يخلص.</p>
+      <div id="download"></div>
+    </aside>
+  </main>
+
+  <!-- المحرر -->
+  <section class="wrap editor panel" id="editor" hidden>
+    <div class="ed-bar">
+      <button class="btn gold" id="edPlay" title="تشغيل / إيقاف (مسافة)">▶</button>
+      <span id="edTime" class="ed-time" dir="ltr">0:00.0</span>
+      <button class="btn small" id="edAddText">✍️ + نص</button>
+      <button class="btn small" id="edSplit" title="قص الشاشة عند المؤشر (S)">✂️ قص الشاشة</button>
+      <button class="btn small" id="edUndo" title="تراجع (Ctrl+Z)">↶ تراجع</button>
+      <button class="btn small" id="edRedo" title="إعادة">↷</button>
+      <label class="zoom">🔍 <input id="edZoom" type="range" min="8" max="240" value="60"></label>
+    </div>
+    <div class="ed-scroll" id="edScroll" dir="ltr">
+      <div class="ed-labels">
+        <div class="lbl ruler-lbl"></div>
+        <div class="lbl">🖼 الخلفية</div>
+        <div class="lbl">📖 الكلام</div>
+        <div class="lbl" id="lblText">✍️ نصوص</div>
+        <div class="lbl" id="lblFx">🎵 مؤثرات</div>
+        <div class="lbl">🔊 الصوت</div>
+      </div>
+      <div class="ed-inner" id="edInner">
+        <div class="ruler" id="edRuler"></div>
+        <div class="lane" id="laneBg"></div>
+        <div class="lane" id="laneSeg"></div>
+        <div class="lane" id="laneText"></div>
+        <div class="lane" id="laneFx"></div>
+        <div class="lane audio" id="laneAudio"><canvas id="edWave" height="56"></canvas></div>
+        <div class="ed-shade" id="edShade"></div>
+        <div class="ed-head" id="edHead"></div>
+      </div>
+    </div>
+    <div class="ed-props" id="edProps"></div>
+  </section>
+
+  <!-- المونتاج -->
+  <section class="wrap panel fx-panel" id="edFx" hidden></section>
+
+  <!-- بتتنقل جوه أقسام المونتاج -->
+  <div id="fxStash" hidden>
+    <div id="bgPicker" class="fx-group">
+      <div class="chips big" id="chips"></div>
+      <div class="thumbs" id="results"></div>
+      <p class="hint" id="selInfo">دوس على أي خلفية تختارها — لو اخترت أكتر من واحدة هيشتغلوا ورا بعض.</p>
+      <input id="bgUpload" type="file" accept="image/*,video/*" multiple hidden>
+    </div>
+    <div id="stBg" class="fx-grid">
+      <div class="fx-row"><span>تغميق الخلفية</span><input id="overlay" type="range" min="0" max="85" value="45"></div>
+    </div>
+    <div id="stText" class="fx-grid">
+      <div class="fx-row"><span>خط الآيات</span><select id="font"></select></div>
+      <div class="fx-row"><span>خط التفسير</span><select id="tafsirFont"></select></div>
+      <div class="fx-row"><span>حجم الخط</span><input id="fontSize" type="range" min="40" max="120" value="72"></div>
+      <div class="fx-row"><span>لون الآيات</span><input id="textColor" type="color" value="#ffffff"></div>
+      <div class="fx-row"><span>الكلام طالع فين</span><select id="textPos"><option value="center">النص</option><option value="top">فوق</option><option value="bottom">تحت</option></select></div>
+      <div class="fx-check"><label><input id="tafsirBox" type="checkbox" checked> التفسير في مربع شفاف</label></div>
+    </div>
+    <div id="stVideo" class="fx-grid">
+      <div class="fx-row"><span>المقاس</span><select id="aspect"><option value="1080x1920">ريلز / تيك توك 9:16</option><option value="1080x1350">بوست 4:5</option><option value="1080x1080">مربع 1:1</option><option value="1920x1080">يوتيوب 16:9</option></select></div>
+      <div class="fx-row"><span>العنوان فوق</span><input id="title" placeholder="بيتكتب لوحده: سورة ..."></div>
+      <div class="fx-row"><span>تحت العنوان</span><input id="subtitle" value="بصوت الشيخ محمد عبده"></div>
+      <div class="fx-row"><span>اسم صفحتك (علامة مائية)</span><input id="watermark" placeholder="@اسم_صفحتك"></div>
+      <div class="fx-row"><span>خط العنوان</span><select id="titleFont"></select></div>
+      <div class="fx-row"><span>لون العنوان</span><input id="accent" type="color" value="#f0d47a"></div>
+      <div class="fx-check"><label><input id="showDisclaimer" type="checkbox" checked> اكتب "صفحة محبين — غير رسمية"</label></div>
+    </div>
+    <input id="maxWords" type="number" value="12" hidden>
+  </div>
+
+  <footer>موقع محبين غير رسمي — غير تابع للشيخ محمد عبده. نص القرآن والتفسير من alquran.cloud.</footer>
+
+  <script src="common.js"></script>
+  <script src="fonts.js"></script>
+  <script src="vendor/mp4-muxer.js"></script>
+  <script src="vendor/mp4box.all.min.js"></script>
+  <script src="framereader.js"></script>
+  <script src="fx-lib.js"></script>
+  <script src="fx-audio.js"></script>
+  <script src="fx.js"></script>
+  <script src="editor.js"></script>
+  <script src="reels.js"></script>
+  <script src="install.js"></script>
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});</script>
+</body>
+</html>
